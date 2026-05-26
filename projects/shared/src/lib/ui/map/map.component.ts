@@ -8,7 +8,7 @@ import {
   input,
   viewChild,
 } from '@angular/core';
-import mapboxgl from 'mapbox-gl';
+import type mapboxgl from 'mapbox-gl';
 import { GeoPoint } from '../../models/geo';
 
 export interface MapMarker {
@@ -20,9 +20,13 @@ export interface MapMarker {
 
 export type GeoJsonPolygon = GeoJSON.Feature<GeoJSON.Polygon> | GeoJSON.Polygon;
 
+type GlMap = InstanceType<typeof mapboxgl.Map>;
+type GlMarker = InstanceType<typeof mapboxgl.Marker>;
+
 /**
- * Reusable Mapbox GL JS wrapper. Apps must import 'mapbox-gl/dist/mapbox-gl.css'
- * globally and pass an access token. With no token, a placeholder is shown.
+ * Reusable Mapbox GL JS wrapper. mapbox-gl is imported dynamically so its ~1.6MB
+ * payload stays out of the initial bundle and only loads on screens that use a map.
+ * Apps must import 'mapbox-gl/dist/mapbox-gl.css' globally and pass an access token.
  */
 @Component({
   selector: 'm-map',
@@ -72,12 +76,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   readonly zoom = input(11);
 
   private readonly container = viewChild<ElementRef<HTMLDivElement>>('container');
-  private map?: mapboxgl.Map;
-  private renderedMarkers: mapboxgl.Marker[] = [];
+  private gl?: typeof mapboxgl;
+  private map?: GlMap;
+  private renderedMarkers: GlMarker[] = [];
 
   constructor() {
     effect(() => {
-      // Re-render markers whenever inputs change and the map exists.
       const markers = this.markers();
       const center = this.centerOn();
       if (this.map) {
@@ -89,14 +93,15 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     const el = this.container()?.nativeElement;
     const token = this.accessToken();
     if (!el || !token) {
       return;
     }
+    this.gl = (await import('mapbox-gl')).default;
     const center = this.centerOn();
-    this.map = new mapboxgl.Map({
+    this.map = new this.gl.Map({
       accessToken: token,
       container: el,
       style: 'mapbox://styles/mapbox/streets-v12',
@@ -110,14 +115,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private syncMarkers(markers: MapMarker[]): void {
-    if (!this.map) {
+    if (!this.map || !this.gl) {
       return;
     }
     this.renderedMarkers.forEach((m) => m.remove());
     this.renderedMarkers = markers.map((m) => {
-      const marker = new mapboxgl.Marker({ color: m.color ?? '#D94251' }).setLngLat([m.lng, m.lat]);
+      const marker = new this.gl!.Marker({ color: m.color ?? '#D94251' }).setLngLat([m.lng, m.lat]);
       if (m.popupHtml) {
-        marker.setPopup(new mapboxgl.Popup().setHTML(m.popupHtml));
+        marker.setPopup(new this.gl!.Popup().setHTML(m.popupHtml));
       }
       return marker.addTo(this.map!);
     });

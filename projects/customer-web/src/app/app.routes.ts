@@ -28,13 +28,25 @@ export const routes: Routes = [
     canActivate: [verifiedGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'plan' },
-      { path: 'plan', loadComponent: placeholder, data: { title: 'Plan your trip' } },
-      { path: 'select-car', loadComponent: placeholder, data: { title: 'Select your car' } },
-      { path: 'checkout', loadComponent: placeholder, data: { title: 'Finalize your trip' } },
+      {
+        path: 'plan',
+        loadComponent: () =>
+          import('./features/booking/plan.component').then((m) => m.PlanComponent),
+      },
+      {
+        path: 'select-car',
+        loadComponent: () =>
+          import('./features/booking/select-car.component').then((m) => m.SelectCarComponent),
+      },
+      {
+        path: 'checkout',
+        loadComponent: () =>
+          import('./features/booking/checkout.component').then((m) => m.CheckoutComponent),
+      },
       {
         path: 'confirmation/:bookingId',
-        loadComponent: placeholder,
-        data: { title: 'Booking confirmed' },
+        loadComponent: () =>
+          import('./features/booking/confirmation.component').then((m) => m.ConfirmationComponent),
       },
     ],
   },

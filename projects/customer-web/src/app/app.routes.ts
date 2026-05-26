@@ -53,20 +53,32 @@ export const routes: Routes = [
   {
     path: 'inspection/:tripId/:phase',
     canActivate: [authGuard],
-    loadComponent: placeholder,
-    data: { title: 'Car conditions' },
+    loadComponent: () =>
+      import('./features/inspection/inspection.component').then((m) => m.InspectionComponent),
   },
   {
     path: 'trip/:id',
     canActivate: [authGuard],
     children: [
-      { path: 'lock-unlock', loadComponent: placeholder, data: { title: 'Lock / Unlock' } },
+      {
+        path: 'lock-unlock',
+        loadComponent: () =>
+          import('./features/trip/lock-unlock.component').then((m) => m.LockUnlockComponent),
+      },
       { path: 'report', loadComponent: placeholder, data: { title: 'Report an issue' } },
       { path: 'locate', loadComponent: placeholder, data: { title: 'Locate vehicle' } },
-      { path: 'end', loadComponent: placeholder, data: { title: 'End trip' } },
+      {
+        path: 'end',
+        loadComponent: () =>
+          import('./features/trip/end-trip.component').then((m) => m.EndTripComponent),
+      },
     ],
   },
-  { path: 'support', loadComponent: placeholder, data: { title: 'Help & Support' } },
+  {
+    path: 'support',
+    loadComponent: () =>
+      import('./features/support/support.component').then((m) => m.SupportComponent),
+  },
 
   // Bottom-nav shell
   {
@@ -83,10 +95,27 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/history/history.component').then((m) => m.HistoryComponent),
       },
+      { path: 'history/:tripId', loadComponent: placeholder, data: { title: 'Trip detail' } },
       {
         path: 'profile',
         loadComponent: () =>
           import('./features/profile/profile.component').then((m) => m.ProfileComponent),
+      },
+      {
+        path: 'profile/personal',
+        loadComponent: placeholder,
+        data: { title: 'Personal Information' },
+      },
+      {
+        path: 'profile/verification',
+        loadComponent: placeholder,
+        data: { title: 'Verification Status' },
+      },
+      { path: 'profile/addresses', loadComponent: placeholder, data: { title: 'Saved Addresses' } },
+      {
+        path: 'profile/payment-methods',
+        loadComponent: placeholder,
+        data: { title: 'Payment Methods' },
       },
     ],
   },

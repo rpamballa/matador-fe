@@ -5,15 +5,12 @@
  * '@matador/shared' only — never from 'projects/shared/src/lib/...' directly.
  */
 
-// Generated API client (from openapi.json — do not hand-edit the api-client folder).
-// Runtime symbols and request functions are re-exported here. Generated DTO
-// models (currently stub `HealthStatus`/`VehicleClass`) are intentionally NOT
-// re-exported to avoid colliding with the hand-written domain models below;
-// the domain models in ./lib/models/domain are the app-facing view types until
-// the real backend openapi.json replaces the stub.
-export { Api, RequestBuilder } from './lib/api-client';
-export type { StrictHttpResponse } from './lib/api-client';
-export { provideApiConfiguration, ApiConfiguration } from './lib/api-client/api-configuration';
+// Generated API client (from the backend openapi.json — do not hand-edit the
+// api-client folder; regenerate with `npm run api:generate`). This re-exports
+// the Api helper service, request functions (per operationId), and DTO models
+// (Request/Response suffixed, so no collision with the domain view-models below).
+export * from './lib/api-client';
+export { provideApiConfiguration } from './lib/api-client/api-configuration';
 
 // Models
 export * from './lib/models/money';

@@ -63,9 +63,9 @@ export class BookingsListComponent {
   statusTone(status: BookingStatus): BadgeTone {
     switch (status) {
       case 'CONFIRMED':
-      case 'ACTIVE':
+      case 'ACTIVATED':
         return 'success';
-      case 'PENDING':
+      case 'PENDING_PAYMENT':
         return 'warning';
       case 'CANCELLED':
         return 'danger';

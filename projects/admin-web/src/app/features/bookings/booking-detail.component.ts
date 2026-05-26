@@ -41,6 +41,9 @@ import { AdminDataService } from '../../core/data/admin-data.service';
           @if (b.status === 'CONFIRMED') {
             <m-button variant="primary" (click)="act('Activate booking')">Activate</m-button>
           }
+          @if (b.assignedVehicleId === undefined && b.status !== 'CANCELLED') {
+            <m-button variant="secondary" (click)="act('Assign vehicle')">Assign vehicle</m-button>
+          }
           @if (b.status !== 'CANCELLED' && b.status !== 'COMPLETED') {
             <m-button variant="danger" (click)="cancel()">Cancel</m-button>
           }

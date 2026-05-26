@@ -23,7 +23,7 @@
   },
   "private": true,
   "matador": {
-    "backendApiVersion": "0.0.0-stub"
+    "backendApiVersion": "v1"
   },
   "lint-staged": {
     "*.{ts,html}": [

@@ -67,10 +67,13 @@ export class VehiclesListComponent {
     switch (status) {
       case 'AVAILABLE':
         return 'success';
-      case 'IN_USE':
+      case 'WITH_CUSTOMER':
       case 'RESERVED':
+      case 'EN_ROUTE_TO_CUSTOMER':
         return 'info';
-      case 'MAINTENANCE':
+      case 'IN_MAINTENANCE':
+      case 'IN_CLEANING':
+      case 'AWAITING_INSPECTION':
         return 'warning';
       default:
         return 'danger';

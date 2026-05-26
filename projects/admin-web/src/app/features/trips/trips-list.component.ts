@@ -68,7 +68,7 @@ export class TripsListComponent {
     switch (status) {
       case 'IN_PROGRESS':
         return 'info';
-      case 'COMPLETED':
+      case 'CLOSED':
         return 'success';
       case 'ENDED_PENDING_INSPECTION':
         return 'warning';

@@ -11,7 +11,7 @@ export function provideApiConfiguration(rootUrl: string) {
   config.rootUrl = rootUrl;
   return {
     provide: ApiConfiguration,
-    useValue: config
+    useValue: config,
   };
 }
 
@@ -22,6 +22,5 @@ export function provideApiConfiguration(rootUrl: string) {
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = '/api/v1';
+  rootUrl: string = 'http://localhost:8080';
 }
-

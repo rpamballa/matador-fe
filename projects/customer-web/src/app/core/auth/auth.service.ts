@@ -1,20 +1,23 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Observable, from, map, switchMap, tap } from 'rxjs';
+import {
+  Api,
+  CustomerProfileResponse,
+  TokenResponse,
+  login,
+  me,
+  refresh as refreshFn,
+  register,
+} from '@matador/shared';
 
-export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
+export type VerificationStatus = 'UNVERIFIED' | 'IN_PROGRESS' | 'VERIFIED' | 'REJECTED' | 'EXPIRED';
 
 export interface Customer {
   id: string;
   email: string;
   firstName: string;
   verificationStatus: VerificationStatus;
-}
-
-export interface AuthSession {
-  accessToken: string;
-  customer: Customer;
+  canBook: boolean;
 }
 
 export interface RegisterRequest {
@@ -27,15 +30,17 @@ export interface RegisterRequest {
 }
 
 /**
- * JWT auth. Access token is held in memory only (never localStorage) to limit
- * XSS exposure; the refresh token lives in an HttpOnly cookie set by the API.
+ * Customer auth backed by the generated API client (JWT).
+ * Access + refresh tokens are held in memory only (never localStorage). The
+ * profile is loaded from GET /api/customer/me after authentication.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly http = inject(HttpClient);
-  private readonly base = `${environment.apiBase}/api/customer/auth`;
+  private readonly api = inject(Api);
 
   private readonly accessToken = signal<string | null>(null);
+  private refreshToken: string | null = null;
+
   readonly currentUser = signal<Customer | null>(null);
   readonly isAuthenticated = computed(() => this.currentUser() !== null);
   readonly verificationStatus = computed(() => this.currentUser()?.verificationStatus ?? null);
@@ -44,31 +49,56 @@ export class AuthService {
     return this.accessToken();
   }
 
-  register(req: RegisterRequest): Observable<AuthSession> {
-    return this.http.post<AuthSession>(`${this.base}/register`, req).pipe(tap((s) => this.apply(s)));
-  }
-
-  login(email: string, password: string): Observable<AuthSession> {
-    return this.http
-      .post<AuthSession>(`${this.base}/login`, { email, password })
-      .pipe(tap((s) => this.apply(s)));
-  }
-
-  refresh(): Observable<AuthSession> {
-    return this.http.post<AuthSession>(`${this.base}/refresh`, {}).pipe(tap((s) => this.apply(s)));
-  }
-
-  logout(): Observable<void> {
-    return this.http.post<void>(`${this.base}/logout`, {}).pipe(
-      tap(() => {
-        this.accessToken.set(null);
-        this.currentUser.set(null);
-      }),
+  register(req: RegisterRequest): Observable<Customer> {
+    // register returns void; immediately authenticate to obtain tokens + profile.
+    return from(this.api.invoke(register, { body: req })).pipe(
+      switchMap(() => this.login(req.email, req.password)),
     );
   }
 
-  private apply(session: AuthSession): void {
-    this.accessToken.set(session.accessToken);
-    this.currentUser.set(session.customer);
+  login(email: string, password: string): Observable<Customer> {
+    return from(this.api.invoke(login, { body: { email, password } })).pipe(
+      tap((token: TokenResponse) => this.applyToken(token)),
+      switchMap(() => this.loadProfile()),
+    );
+  }
+
+  refresh(): Observable<Customer> {
+    return from(
+      this.api.invoke(refreshFn, { body: { refreshToken: this.refreshToken ?? '' } }),
+    ).pipe(
+      tap((token: TokenResponse) => this.applyToken(token)),
+      switchMap(() => this.loadProfile()),
+    );
+  }
+
+  /** No server endpoint for customer logout; clear local session. */
+  logout(): Observable<void> {
+    this.accessToken.set(null);
+    this.refreshToken = null;
+    this.currentUser.set(null);
+    return from(Promise.resolve());
+  }
+
+  private loadProfile(): Observable<Customer> {
+    return from(this.api.invoke(me, {})).pipe(
+      map((p: CustomerProfileResponse) => this.toCustomer(p)),
+      tap((customer) => this.currentUser.set(customer)),
+    );
+  }
+
+  private applyToken(token: TokenResponse): void {
+    this.accessToken.set(token.accessToken ?? null);
+    this.refreshToken = token.refreshToken ?? null;
+  }
+
+  private toCustomer(p: CustomerProfileResponse): Customer {
+    return {
+      id: p.id ?? '',
+      email: p.email ?? '',
+      firstName: p.firstName ?? '',
+      verificationStatus: (p.verificationStatus as VerificationStatus) ?? 'UNVERIFIED',
+      canBook: p.canBook ?? false,
+    };
   }
 }

@@ -20,6 +20,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([credentialsInterceptor, loadingInterceptor, errorInterceptor]),
     ),
     provideAnimationsAsync(),
-    provideApiConfiguration(`${environment.apiBase}/api/v1`),
+    provideApiConfiguration(environment.apiBase),
   ],
 };

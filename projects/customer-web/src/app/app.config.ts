@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([jwtInterceptor, loadingInterceptor, errorInterceptor])),
-    provideApiConfiguration(`${environment.apiBase}/api/v1`),
+    provideApiConfiguration(environment.apiBase),
     provideAppInitializer(() => inject(AnalyticsService).init()),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

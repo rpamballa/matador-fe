@@ -76,7 +76,7 @@ export class CustomersListComponent {
     switch (status) {
       case 'VERIFIED':
         return 'success';
-      case 'PENDING':
+      case 'IN_PROGRESS':
         return 'warning';
       case 'REJECTED':
         return 'danger';

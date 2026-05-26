@@ -52,7 +52,7 @@ export class VerificationStatusComponent {
     switch (this.status()) {
       case 'VERIFIED':
         return 'success';
-      case 'PENDING':
+      case 'IN_PROGRESS':
         return 'warning';
       case 'REJECTED':
         return 'danger';

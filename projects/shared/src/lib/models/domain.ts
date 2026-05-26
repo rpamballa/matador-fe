@@ -1,23 +1,40 @@
 import { Money } from './money';
 import { GeoPoint } from './geo';
 
-/* ---- Enums / status unions ---- */
+/* ---- Enums / status unions (mirror the backend OpenAPI enums) ---- */
 
-export type VehicleStatus = 'AVAILABLE' | 'RESERVED' | 'IN_USE' | 'MAINTENANCE' | 'OUT_OF_SERVICE';
+export type VehicleStatus =
+  | 'AVAILABLE'
+  | 'RESERVED'
+  | 'IN_PREPARATION'
+  | 'EN_ROUTE_TO_CUSTOMER'
+  | 'WITH_CUSTOMER'
+  | 'EN_ROUTE_TO_WAREHOUSE'
+  | 'AWAITING_INSPECTION'
+  | 'IN_CLEANING'
+  | 'IN_MAINTENANCE'
+  | 'OUT_OF_SERVICE'
+  | 'RETIRED';
 
-export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED';
+export type BookingStatus =
+  | 'PENDING_PAYMENT'
+  | 'CONFIRMED'
+  | 'ACTIVATED'
+  | 'COMPLETED'
+  | 'CANCELLED'
+  | 'NO_SHOW';
 
-export type TripStatus = 'IN_PROGRESS' | 'ENDED_PENDING_INSPECTION' | 'COMPLETED' | 'CANCELLED';
+export type TripStatus = 'IN_PROGRESS' | 'ENDED_PENDING_INSPECTION' | 'CLOSED';
 
-export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
+export type VerificationStatus = 'UNVERIFIED' | 'IN_PROGRESS' | 'VERIFIED' | 'REJECTED' | 'EXPIRED';
 
-export type CustomerStatus = 'ACTIVE' | 'SUSPENDED';
+export type CustomerStatus = 'ACTIVE' | 'SUSPENDED' | 'DEACTIVATED';
 
 export type IncidentType =
   | 'DAMAGE'
-  | 'ACCIDENT'
-  | 'LATE_RETURN'
   | 'OUT_OF_ZONE'
+  | 'LATE_RETURN'
+  | 'ACCIDENT'
   | 'TICKET'
   | 'OTHER';
 
@@ -27,14 +44,17 @@ export type IncidentStatus = 'OPEN' | 'IN_REVIEW' | 'RESOLVED' | 'DISMISSED';
 
 export type InspectionPhase = 'pickup' | 'dropoff';
 
-export type InspectionStatus = 'SUBMITTED' | 'PASSED' | 'FLAGGED';
+export type InspectionStatus = 'PASSED' | 'FLAGGED';
 
 export type LedgerEntryType =
-  | 'RENTAL_CHARGED'
   | 'DEPOSIT_HELD'
+  | 'DEPOSIT_CAPTURED'
   | 'DEPOSIT_RELEASED'
-  | 'REFUND'
-  | 'INCIDENT_CHARGE'
+  | 'RENTAL_CHARGED'
+  | 'OVERAGE_CHARGED'
+  | 'INCIDENT_CHARGED'
+  | 'REFUND_ISSUED'
+  | 'DISPUTE_CHARGEBACK'
   | 'MANUAL_ADJUSTMENT';
 
 /* ---- Entities ---- */

@@ -7,9 +7,13 @@ import {
   Inspection,
   LedgerEntry,
   PagedResult,
+  PricingRate,
+  PromoCode,
+  StaffMember,
   Trip,
   Vehicle,
   VehicleClass,
+  Zone,
 } from '@matador/shared';
 
 const usd = (cents: number) => ({ amount: cents, currency: 'USD' });
@@ -257,6 +261,74 @@ export class AdminDataService {
     },
   ];
 
+  private readonly zones: Zone[] = [
+    {
+      id: 'zn-1',
+      name: 'Triangle',
+      polygon: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [-79.05, 35.7],
+              [-78.5, 35.7],
+              [-78.5, 36.05],
+              [-79.05, 36.05],
+              [-79.05, 35.7],
+            ],
+          ],
+        },
+      },
+    },
+  ];
+
+  private readonly rates: PricingRate[] = [
+    {
+      id: 'rt-1',
+      vehicleClassId: 'vc-1',
+      vehicleClassName: 'Compact SUV Hybrid',
+      dailyRate: usd(7900),
+      effectiveFrom: '2026-01-01T00:00:00Z',
+    },
+    {
+      id: 'rt-2',
+      vehicleClassId: 'vc-2',
+      vehicleClassName: 'Electric Sedan',
+      dailyRate: usd(9900),
+      effectiveFrom: '2026-01-01T00:00:00Z',
+    },
+  ];
+
+  private readonly promos: PromoCode[] = [
+    {
+      id: 'pr-1',
+      code: 'WELCOME10',
+      description: '10% off first trip',
+      percentOff: 10,
+      active: true,
+      expiresAt: '2026-12-31T00:00:00Z',
+    },
+  ];
+
+  private readonly staff: StaffMember[] = [
+    {
+      id: 'st-1',
+      name: 'Operations Admin',
+      email: 'admin@matador.com',
+      role: 'ADMIN',
+      active: true,
+    },
+    {
+      id: 'st-2',
+      name: 'Dee Spatcher',
+      email: 'dispatch@matador.com',
+      role: 'DISPATCHER',
+      active: true,
+    },
+  ];
+
   private wrap<T>(value: T): Observable<T> {
     return of(value).pipe(delay(150));
   }
@@ -304,12 +376,30 @@ export class AdminDataService {
   listInspections() {
     return this.wrap(this.page(this.inspections));
   }
+  getInspection(id: string) {
+    return this.wrap(this.inspections.find((i) => i.id === id) ?? null);
+  }
+  getIncident(id: string) {
+    return this.wrap(this.incidents.find((i) => i.id === id) ?? null);
+  }
   listLedger() {
     return this.wrap(this.page(this.ledger));
   }
 
   listVehicleClasses() {
     return this.wrap(this.vehicleClasses);
+  }
+  listZones() {
+    return this.wrap(this.zones);
+  }
+  listRates() {
+    return this.wrap(this.page(this.rates));
+  }
+  listPromos() {
+    return this.wrap(this.page(this.promos));
+  }
+  listStaff() {
+    return this.wrap(this.page(this.staff));
   }
 
   dashboard() {

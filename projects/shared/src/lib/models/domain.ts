@@ -153,6 +153,51 @@ export interface Zone {
   polygon: GeoJSON.Feature<GeoJSON.Polygon>;
 }
 
+export interface PricingRate {
+  id: string;
+  vehicleClassId: string;
+  vehicleClassName: string;
+  dailyRate: Money;
+  effectiveFrom: string;
+}
+
+export interface PromoCode {
+  id: string;
+  code: string;
+  description: string;
+  percentOff: number;
+  active: boolean;
+  expiresAt?: string;
+}
+
+export type StaffRoleName = 'ADMIN' | 'DISPATCHER' | 'SUPPORT' | 'READONLY';
+
+export interface StaffMember {
+  id: string;
+  name: string;
+  email: string;
+  role: StaffRoleName;
+  active: boolean;
+}
+
+export interface SavedAddress {
+  id: string;
+  label: string;
+  line1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+}
+
+export interface PaymentCard {
+  id: string;
+  brand: string;
+  last4: string;
+  expMonth: number;
+  expYear: number;
+  isDefault: boolean;
+}
+
 export interface PagedResult<T> {
   items: T[];
   total: number;

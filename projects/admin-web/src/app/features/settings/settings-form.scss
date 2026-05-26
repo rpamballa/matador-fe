@@ -1,0 +1,29 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--m-space-3);
+  max-width: 420px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--m-space-1);
+  font-size: 0.8125rem;
+  color: var(--m-color-text-secondary);
+}
+
+input,
+select {
+  height: 36px;
+  padding: 0 var(--m-space-2);
+  border: 1px solid var(--m-color-border);
+  border-radius: var(--m-radius-sm);
+  font: inherit;
+}
+
+.check {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--m-space-2);
+}

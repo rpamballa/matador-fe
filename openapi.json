@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Matador API (stub)",
+    "version": "0.0.0-stub",
+    "description": "Placeholder spec so the client-generation pipeline is wired up before the real backend openapi.json is available. Replace with a downloaded release artifact and re-run `npm run api:generate`."
+  },
+  "servers": [{ "url": "/api/v1" }],
+  "tags": [{ "name": "Health" }, { "name": "VehicleClasses" }],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["Health"],
+        "operationId": "getHealth",
+        "summary": "Liveness probe",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthStatus" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehicle-classes": {
+      "get": {
+        "tags": ["VehicleClasses"],
+        "operationId": "listVehicleClasses",
+        "summary": "List bookable vehicle classes",
+        "responses": {
+          "200": {
+            "description": "Vehicle classes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/VehicleClass" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HealthStatus": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "type": "string", "example": "UP" }
+        }
+      },
+      "VehicleClass": {
+        "type": "object",
+        "required": ["id", "name", "baseDailyRate", "currency"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "seats": { "type": "integer", "format": "int32" },
+          "luggage": { "type": "integer", "format": "int32" },
+          "drivetrain": { "type": "string" },
+          "baseDailyRate": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Integer minor units (cents)"
+          },
+          "currency": { "type": "string", "example": "USD" },
+          "active": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

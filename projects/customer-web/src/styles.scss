@@ -1,0 +1,24 @@
+@use 'theme/tokens';
+
+:root {
+  /* Customer app uses the brand red at full saturation (matches mockups) */
+  --m-color-primary: #d94251;
+  --m-color-primary-dark: #b0303d;
+  --m-color-primary-soft: #f8e5e7;
+  --m-color-background: #ffffff;
+
+  /* Larger radii to match mockup roundness */
+  --m-radius-sm: 8px;
+  --m-radius-md: 12px;
+  --m-radius-lg: 16px;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family: var(--m-font-family);
+  font-size: 16px;
+  color: var(--m-color-text-primary);
+  background: var(--m-color-background);
+}

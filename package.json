@@ -1,0 +1,81 @@
+{
+  "name": "matador-web",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "prepare": "husky || true",
+    "start:admin": "ng serve admin-web --port 4201",
+    "start:customer": "ng serve customer-web --port 4200",
+    "build:shared": "ng build shared",
+    "build:admin": "ng build admin-web --configuration=production",
+    "build:customer": "ng build customer-web --configuration=production",
+    "build:all": "npm run build:shared && npm run build:admin && npm run build:customer",
+    "watch": "ng build --watch --configuration development",
+    "lint": "ng lint",
+    "format": "prettier --write \"projects/**/*.{ts,html,scss,json}\"",
+    "test": "ng test shared && ng test admin-web && ng test customer-web",
+    "test:shared": "ng test shared",
+    "test:admin": "ng test admin-web",
+    "test:customer": "ng test customer-web",
+    "api:generate": "ng-openapi-gen",
+    "e2e:admin": "playwright test --project=admin",
+    "e2e:customer": "playwright test --project=customer"
+  },
+  "private": true,
+  "matador": {
+    "backendApiVersion": "0.0.0-stub"
+  },
+  "lint-staged": {
+    "*.{ts,html}": [
+      "eslint --fix"
+    ],
+    "*.{ts,html,scss,json,md}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@angular/animations": "^19.2.22",
+    "@angular/cdk": "^19.2.19",
+    "@angular/common": "^19.2.0",
+    "@angular/compiler": "^19.2.0",
+    "@angular/core": "^19.2.0",
+    "@angular/forms": "^19.2.0",
+    "@angular/material": "^19.2.19",
+    "@angular/platform-browser": "^19.2.0",
+    "@angular/platform-browser-dynamic": "^19.2.0",
+    "@angular/router": "^19.2.0",
+    "@angular/service-worker": "^19.2.0",
+    "@stripe/stripe-js": "^9.6.0",
+    "@types/luxon": "^3.7.1",
+    "@types/mapbox-gl": "^3.4.1",
+    "chart.js": "^4.5.1",
+    "luxon": "^3.7.2",
+    "mapbox-gl": "^3.24.0",
+    "ng2-charts": "^6.0.1",
+    "posthog-js": "^1.376.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-builders/jest": "^19.0.1",
+    "@angular-devkit/build-angular": "^19.2.26",
+    "@angular/cli": "^19.2.26",
+    "@angular/compiler-cli": "^19.2.0",
+    "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.60.0",
+    "@types/jest": "^29.5.14",
+    "angular-eslint": "^19.8.1",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "lint-staged": "^17.0.5",
+    "ng-openapi-gen": "^1.0.5",
+    "ng-packagr": "^19.2.0",
+    "prettier": "^3.8.3",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.60.0"
+  }
+}

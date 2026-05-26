@@ -1,0 +1,29 @@
+name: Deploy Customer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/customer-web/**'
+      - 'projects/shared/**'
+      - 'package.json'
+      - '.github/workflows/deploy-customer.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build:customer
+      # TODO: publish dist/customer-web/browser to the static host (Cloudflare Pages).
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: customer-web
+          path: dist/customer-web/browser

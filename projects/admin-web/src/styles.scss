@@ -32,3 +32,67 @@ body {
   color: var(--m-color-text-primary);
   background: var(--m-color-background);
 }
+
+/* Admin layout utilities */
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 var(--m-space-4);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--m-space-3);
+  align-items: center;
+  margin-bottom: var(--m-space-4);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--m-color-surface);
+  border-radius: var(--m-radius-md);
+  overflow: hidden;
+  box-shadow: var(--m-shadow-card);
+
+  th,
+  td {
+    text-align: left;
+    padding: 0 var(--m-space-4);
+    height: 40px;
+    border-bottom: 1px solid var(--m-color-border);
+    white-space: nowrap;
+  }
+
+  th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--m-color-text-muted);
+    background: var(--m-color-background);
+  }
+
+  tbody tr:hover {
+    background: var(--m-color-primary-soft);
+  }
+
+  a {
+    color: var(--m-color-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: var(--m-space-2) var(--m-space-4);
+
+  dt {
+    color: var(--m-color-text-muted);
+  }
+  dd {
+    margin: 0;
+  }
+}

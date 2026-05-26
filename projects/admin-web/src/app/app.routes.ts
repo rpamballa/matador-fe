@@ -20,10 +20,58 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
-      { path: 'bookings', loadComponent: placeholder, data: { title: 'Bookings' } },
-      { path: 'trips', loadComponent: placeholder, data: { title: 'Trips' } },
-      { path: 'vehicles', loadComponent: placeholder, data: { title: 'Vehicles' } },
-      { path: 'customers', loadComponent: placeholder, data: { title: 'Customers' } },
+      {
+        path: 'bookings',
+        loadComponent: () =>
+          import('./features/bookings/bookings-list.component').then(
+            (m) => m.BookingsListComponent,
+          ),
+      },
+      {
+        path: 'bookings/:id',
+        loadComponent: () =>
+          import('./features/bookings/booking-detail.component').then(
+            (m) => m.BookingDetailComponent,
+          ),
+      },
+      {
+        path: 'trips',
+        loadComponent: () =>
+          import('./features/trips/trips-list.component').then((m) => m.TripsListComponent),
+      },
+      {
+        path: 'trips/:id',
+        loadComponent: () =>
+          import('./features/trips/trip-detail.component').then((m) => m.TripDetailComponent),
+      },
+      {
+        path: 'vehicles',
+        loadComponent: () =>
+          import('./features/vehicles/vehicles-list.component').then(
+            (m) => m.VehiclesListComponent,
+          ),
+      },
+      {
+        path: 'vehicles/:id',
+        loadComponent: () =>
+          import('./features/vehicles/vehicle-detail.component').then(
+            (m) => m.VehicleDetailComponent,
+          ),
+      },
+      {
+        path: 'customers',
+        loadComponent: () =>
+          import('./features/customers/customers-list.component').then(
+            (m) => m.CustomersListComponent,
+          ),
+      },
+      {
+        path: 'customers/:id',
+        loadComponent: () =>
+          import('./features/customers/customer-detail.component').then(
+            (m) => m.CustomerDetailComponent,
+          ),
+      },
       { path: 'incidents', loadComponent: placeholder, data: { title: 'Incidents' } },
       { path: 'inspections', loadComponent: placeholder, data: { title: 'Inspections' } },
       { path: 'ledger', loadComponent: placeholder, data: { title: 'Ledger' } },

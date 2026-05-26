@@ -1,9 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, verifiedGuard } from './core/auth/auth.guards';
 
-const placeholder = () =>
-  import('./core/layout/placeholder-page.component').then((m) => m.PlaceholderPageComponent);
-
 export const routes: Routes = [
   // Full-screen flows (no bottom nav)
   {
@@ -21,8 +18,18 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/onboarding/sign-up.component').then((m) => m.SignUpComponent),
   },
-  { path: 'verify', loadComponent: placeholder, data: { title: 'Verification' } },
-  { path: 'verify/pending', loadComponent: placeholder, data: { title: 'Verification pending' } },
+  {
+    path: 'verify',
+    loadComponent: () =>
+      import('./features/verification/verify.component').then((m) => m.VerifyComponent),
+  },
+  {
+    path: 'verify/pending',
+    loadComponent: () =>
+      import('./features/verification/verify-pending.component').then(
+        (m) => m.VerifyPendingComponent,
+      ),
+  },
   {
     path: 'booking',
     canActivate: [verifiedGuard],
@@ -65,8 +72,16 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/trip/lock-unlock.component').then((m) => m.LockUnlockComponent),
       },
-      { path: 'report', loadComponent: placeholder, data: { title: 'Report an issue' } },
-      { path: 'locate', loadComponent: placeholder, data: { title: 'Locate vehicle' } },
+      {
+        path: 'report',
+        loadComponent: () =>
+          import('./features/trip/report.component').then((m) => m.ReportComponent),
+      },
+      {
+        path: 'locate',
+        loadComponent: () =>
+          import('./features/trip/locate.component').then((m) => m.LocateComponent),
+      },
       {
         path: 'end',
         loadComponent: () =>
@@ -95,7 +110,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/history/history.component').then((m) => m.HistoryComponent),
       },
-      { path: 'history/:tripId', loadComponent: placeholder, data: { title: 'Trip detail' } },
+      {
+        path: 'history/:tripId',
+        loadComponent: () =>
+          import('./features/history/history-detail.component').then(
+            (m) => m.HistoryDetailComponent,
+          ),
+      },
       {
         path: 'profile',
         loadComponent: () =>
@@ -103,19 +124,27 @@ export const routes: Routes = [
       },
       {
         path: 'profile/personal',
-        loadComponent: placeholder,
-        data: { title: 'Personal Information' },
+        loadComponent: () =>
+          import('./features/profile/personal-info.component').then((m) => m.PersonalInfoComponent),
       },
       {
         path: 'profile/verification',
-        loadComponent: placeholder,
-        data: { title: 'Verification Status' },
+        loadComponent: () =>
+          import('./features/profile/verification-status.component').then(
+            (m) => m.VerificationStatusComponent,
+          ),
       },
-      { path: 'profile/addresses', loadComponent: placeholder, data: { title: 'Saved Addresses' } },
+      {
+        path: 'profile/addresses',
+        loadComponent: () =>
+          import('./features/profile/addresses.component').then((m) => m.AddressesComponent),
+      },
       {
         path: 'profile/payment-methods',
-        loadComponent: placeholder,
-        data: { title: 'Payment Methods' },
+        loadComponent: () =>
+          import('./features/profile/payment-methods.component').then(
+            (m) => m.PaymentMethodsComponent,
+          ),
       },
     ],
   },

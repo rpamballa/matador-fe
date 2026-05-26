@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, delay, of } from 'rxjs';
-import { Money, VehicleClass } from '@matador/shared';
+import { Money, PaymentCard, SavedAddress, Trip, VehicleClass } from '@matador/shared';
 
 const usd = (cents: number) => ({ amount: cents, currency: 'USD' });
 
@@ -104,6 +104,62 @@ export class CustomerDataService {
       insurance: usd(insurance),
       total: usd(subtotalCents + taxes + delivery + insurance),
     });
+  }
+
+  private readonly addresses: SavedAddress[] = [
+    {
+      id: 'ad-1',
+      label: 'Home',
+      line1: '100 Fayetteville St',
+      city: 'Raleigh',
+      state: 'NC',
+      postalCode: '27601',
+    },
+    {
+      id: 'ad-2',
+      label: 'Work',
+      line1: '201 W Main St',
+      city: 'Durham',
+      state: 'NC',
+      postalCode: '27701',
+    },
+  ];
+
+  private readonly cards: PaymentCard[] = [
+    { id: 'pc-1', brand: 'Visa', last4: '4242', expMonth: 8, expYear: 2028, isDefault: true },
+  ];
+
+  private readonly history: Trip[] = [
+    {
+      id: 'tr-9001',
+      tripNumber: 'T-4990',
+      bookingId: 'bk-9001',
+      customerId: 'me',
+      customerName: 'You',
+      vehicleId: 've-1',
+      vehicleLabel: 'Toyota RAV4 Hybrid',
+      actualPickupAt: '2026-05-10T10:00:00Z',
+      actualDropoffAt: '2026-05-12T10:00:00Z',
+      milesDriven: 156,
+      total: usd(18800),
+      status: 'COMPLETED',
+    },
+  ];
+
+  listAddresses(): Observable<SavedAddress[]> {
+    return this.wrap(this.addresses);
+  }
+
+  listCards(): Observable<PaymentCard[]> {
+    return this.wrap(this.cards);
+  }
+
+  listHistory(): Observable<Trip[]> {
+    return this.wrap(this.history);
+  }
+
+  getHistoryTrip(id: string): Observable<Trip | null> {
+    return this.wrap(this.history.find((t) => t.id === id) ?? null);
   }
 
   /** Point-in-polygon test against the zone (ray casting). */

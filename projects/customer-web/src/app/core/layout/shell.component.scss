@@ -10,6 +10,43 @@
   padding-bottom: calc(64px + var(--m-safe-bottom));
 }
 
+.install-banner {
+  position: fixed;
+  top: var(--m-safe-top);
+  left: 0;
+  right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--m-space-3);
+  padding: var(--m-space-3) var(--m-space-4);
+  background: var(--m-color-primary);
+  color: #fff;
+  font-size: 0.875rem;
+}
+
+.install-actions {
+  display: flex;
+  gap: var(--m-space-2);
+}
+
+.install-banner button {
+  border: none;
+  background: #fff;
+  color: var(--m-color-primary-dark);
+  border-radius: var(--m-radius-pill);
+  padding: var(--m-space-1) var(--m-space-3);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.install-banner button.dismiss {
+  background: transparent;
+  color: #fff;
+}
+
 .bottom-nav {
   position: fixed;
   bottom: 0;

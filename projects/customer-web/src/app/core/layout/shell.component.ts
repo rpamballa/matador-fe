@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ConfirmDialogComponent, ToastHostComponent } from '@matador/shared';
+import { InstallPromptService } from '../pwa/install-prompt.service';
 
 interface NavItem {
   label: string;
@@ -15,6 +16,15 @@ interface NavItem {
   imports: [RouterOutlet, RouterLink, RouterLinkActive, ToastHostComponent, ConfirmDialogComponent],
   template: `
     <div class="shell">
+      @if (install.canInstall()) {
+        <div class="install-banner">
+          <span>Add Matador to your home screen</span>
+          <div class="install-actions">
+            <button type="button" (click)="install.install()">Add</button>
+            <button type="button" class="dismiss" (click)="install.dismiss()">Not now</button>
+          </div>
+        </div>
+      }
       <main class="content">
         <router-outlet />
       </main>
@@ -33,6 +43,7 @@ interface NavItem {
   styleUrl: './shell.component.scss',
 })
 export class ShellComponent {
+  readonly install = inject(InstallPromptService);
   readonly nav: NavItem[] = [
     { label: 'Home', path: '/home', icon: '🏠' },
     { label: 'History', path: '/history', icon: '🚗' },

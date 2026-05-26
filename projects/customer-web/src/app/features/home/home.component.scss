@@ -4,6 +4,9 @@
 
 .top {
   padding: calc(var(--m-safe-top) + var(--m-space-4)) var(--m-space-4) var(--m-space-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .hello {
@@ -11,10 +14,79 @@
   font-weight: 700;
 }
 
+.variant-switch {
+  display: flex;
+  gap: 2px;
+  background: var(--m-color-background);
+  border-radius: var(--m-radius-pill);
+  padding: 2px;
+}
+
+.variant-switch button {
+  border: none;
+  background: none;
+  border-radius: var(--m-radius-pill);
+  width: 28px;
+  height: 24px;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--m-color-text-muted);
+}
+
+.variant-switch button.on {
+  background: var(--m-color-primary);
+  color: #fff;
+}
+
 .pills {
   display: flex;
   gap: var(--m-space-2);
   margin-top: var(--m-space-2);
+}
+
+.addr {
+  color: var(--m-color-text-secondary);
+  font-size: 0.875rem;
+  margin: var(--m-space-2) 0;
+}
+
+.cta,
+.quick {
+  display: flex;
+  gap: var(--m-space-2);
+  margin-top: var(--m-space-3);
+}
+
+.btn {
+  flex: 1;
+  border: 1px solid var(--m-color-border);
+  background: var(--m-color-surface);
+  border-radius: var(--m-radius-md);
+  padding: var(--m-space-2) var(--m-space-3);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: var(--m-color-primary);
+  border-color: var(--m-color-primary);
+  color: #fff;
+}
+
+.btn.ghost {
+  background: none;
+  border: none;
+  color: var(--m-color-text-muted);
+  width: 100%;
+  margin-top: var(--m-space-2);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .pill {

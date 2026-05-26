@@ -72,17 +72,43 @@ export const routes: Routes = [
             (m) => m.CustomerDetailComponent,
           ),
       },
-      { path: 'incidents', loadComponent: placeholder, data: { title: 'Incidents' } },
+      {
+        path: 'incidents',
+        loadComponent: () =>
+          import('./features/incidents/incidents-list.component').then(
+            (m) => m.IncidentsListComponent,
+          ),
+      },
       { path: 'inspections', loadComponent: placeholder, data: { title: 'Inspections' } },
-      { path: 'ledger', loadComponent: placeholder, data: { title: 'Ledger' } },
+      {
+        path: 'ledger',
+        loadComponent: () =>
+          import('./features/ledger/ledger-list.component').then((m) => m.LedgerListComponent),
+      },
       {
         path: 'settings',
         children: [
           { path: '', pathMatch: 'full', redirectTo: 'vehicle-classes' },
           {
             path: 'vehicle-classes',
-            loadComponent: placeholder,
-            data: { title: 'Vehicle Classes' },
+            loadComponent: () =>
+              import('./features/settings/vehicle-classes-list.component').then(
+                (m) => m.VehicleClassesListComponent,
+              ),
+          },
+          {
+            path: 'vehicle-classes/new',
+            loadComponent: () =>
+              import('./features/settings/vehicle-class-form.component').then(
+                (m) => m.VehicleClassFormComponent,
+              ),
+          },
+          {
+            path: 'vehicle-classes/:id',
+            loadComponent: () =>
+              import('./features/settings/vehicle-class-form.component').then(
+                (m) => m.VehicleClassFormComponent,
+              ),
           },
           { path: 'zones', loadComponent: placeholder, data: { title: 'Zones' } },
           { path: 'rates', loadComponent: placeholder, data: { title: 'Pricing Rates' } },
